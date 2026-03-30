@@ -108,6 +108,7 @@ class MaxGap extends StatelessWidget {
     Key? key,
     this.crossAxisExtent,
     this.color,
+    this.flex = 1,
     this.fit = FlexFit.loose,
   }) : super(key: key);
 
@@ -121,12 +122,14 @@ class MaxGap extends StatelessWidget {
     double mainAxisExtent, {
     Key? key,
     Color? color,
+    int flex = 1,
     FlexFit fit = FlexFit.loose,
   }) : this(
           mainAxisExtent,
           key: key,
           crossAxisExtent: double.infinity,
           color: color,
+          flex: flex,
           fit: fit,
         );
 
@@ -153,6 +156,11 @@ class MaxGap extends StatelessWidget {
   /// The color used to fill the gap.
   final Color? color;
 
+  /// The flex factor used by the surrounding [Flexible].
+  ///
+  /// Defaults to `1`, which preserves the existing behavior.
+  final int flex;
+
   /// How a flexible gap is inscribed into the available space.
   ///
   /// Defaults to [FlexFit.loose], which preserves the existing behavior.
@@ -161,6 +169,7 @@ class MaxGap extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Flexible(
+      flex: flex,
       fit: fit,
       child: _RawGap(
         mainAxisExtent,

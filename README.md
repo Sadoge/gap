@@ -38,6 +38,7 @@ The `Gap` widget also works inside `Scrollable` widgets such as `ListViews`. In 
 This package also comes with a `MaxGap` widget.
 The `MaxGap` widget will try to fill the available space in a `Column` or a `Row` with the specified size. If the available space
 is lesser than the specified size, the `MaxGap` widget will only take the available space.
+It also accepts an optional `flex` parameter if you need to control how multiple `MaxGap`s divide the available space.
 
 It's useful when you want to have a gap that shrinks to avoid an overflow otherwise.
 

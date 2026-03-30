@@ -18,17 +18,20 @@ void main() {
     expect(c.mainAxisExtent, 0);
     expect(c.crossAxisExtent, null);
     expect(c.color, null);
+    expect(c.flex, 1);
     expect(c.fit, FlexFit.loose);
 
     const MaxGap d = MaxGap(
       10,
       crossAxisExtent: 20,
       color: Colors.red,
+      flex: 2,
       fit: FlexFit.tight,
     );
     expect(d.mainAxisExtent, 10);
     expect(d.crossAxisExtent, 20);
     expect(d.color, Colors.red);
+    expect(d.flex, 2);
     expect(d.fit, FlexFit.tight);
 
     const Gap e = Gap.expand(10, color: Colors.red);
@@ -39,11 +42,13 @@ void main() {
     const MaxGap f = MaxGap.expand(
       10,
       color: Colors.red,
+      flex: 2,
       fit: FlexFit.tight,
     );
     expect(f.mainAxisExtent, 10);
     expect(f.crossAxisExtent, double.infinity);
     expect(f.color, Colors.red);
+    expect(f.flex, 2);
     expect(f.fit, FlexFit.tight);
   });
 
@@ -232,6 +237,72 @@ void main() {
 
     final RenderBox box = tester.renderObject(find.byType(MaxGap));
     expect(box.size.width, 200);
+    expect(box.size.height, 20);
+  });
+
+  testWidgets('MaxGap forwards flex to Flexible',
+      (WidgetTester tester) async {
+    await tester.pumpWidget(
+      const Row(
+        textDirection: TextDirection.ltr,
+        children: <Widget>[
+          MaxGap(100, flex: 3),
+        ],
+      ),
+    );
+
+    final Flexible flexible = tester.widget(find.byType(Flexible));
+    expect(flexible.flex, 3);
+    expect(flexible.fit, FlexFit.loose);
+  });
+
+  testWidgets('MaxGap flex affects space distribution in a Row',
+      (WidgetTester tester) async {
+    const Key firstKey = ValueKey<String>('first-gap');
+    const Key secondKey = ValueKey<String>('second-gap');
+
+    await tester.pumpWidget(
+      const Center(
+        child: SizedBox(
+          width: 180,
+          child: Row(
+            textDirection: TextDirection.ltr,
+            children: <Widget>[
+              MaxGap(200, key: firstKey, crossAxisExtent: 20),
+              MaxGap(200, key: secondKey, crossAxisExtent: 20, flex: 2),
+            ],
+          ),
+        ),
+      ),
+    );
+
+    final RenderBox firstBox = tester.renderObject(find.byKey(firstKey));
+    final RenderBox secondBox = tester.renderObject(find.byKey(secondKey));
+
+    expect(firstBox.size.width, 60);
+    expect(secondBox.size.width, 120);
+    expect(firstBox.size.height, 20);
+    expect(secondBox.size.height, 20);
+  });
+
+  testWidgets('MaxGap remains constrained when custom flex is used',
+      (WidgetTester tester) async {
+    await tester.pumpWidget(
+      const Center(
+        child: SizedBox(
+          width: 90,
+          child: Row(
+            textDirection: TextDirection.ltr,
+            children: <Widget>[
+              MaxGap(100, crossAxisExtent: 20, flex: 3),
+            ],
+          ),
+        ),
+      ),
+    );
+
+    final RenderBox box = tester.renderObject(find.byType(MaxGap));
+    expect(box.size.width, 90);
     expect(box.size.height, 20);
   });
 
