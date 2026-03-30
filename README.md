@@ -44,9 +44,9 @@ It's useful when you want to have a gap that shrinks to avoid an overflow otherw
 
 ### Other parameters
 
-By default a `Gap` will have no extent in the opposite direction of the `Flex` parent.
+By default a `Gap` treats the opposite direction extent as `0` before constraints are applied.
 If you want the `Gap` to have a color, you'll have to set the `color` and the `crossAxisExtent` parameters.
-You can also use the `Gap.expand` constructor to expand the `Gap` in the opposite direction of the `Flex` parent.
+You can also use the `Gap.expand` constructor to expand the `Gap` in the opposite direction of the parent.
 
 ### SliverGap
 
@@ -70,4 +70,3 @@ Feel free to contribute to this project.
 
 If you find a bug or want a feature, but don't know how to fix/implement it, please fill an [issue](https://github.com/letsar/gap/issues).  
 If you fixed a bug or implemented a feature, please send a [pull request](https://github.com/letsar/gap/pulls).
-

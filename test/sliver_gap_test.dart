@@ -48,4 +48,41 @@ void main() {
     expect(sliver.geometry!.layoutExtent, 100);
     expect(sliver.geometry!.paintExtent, 100);
   });
+
+  testWidgets('SliverGap paints its color', (WidgetTester tester) async {
+    await tester.pumpWidget(
+      const Directionality(
+        textDirection: TextDirection.ltr,
+        child: CustomScrollView(
+          slivers: <Widget>[
+            SliverGap(40, color: Colors.red),
+          ],
+        ),
+      ),
+    );
+
+    expect(find.byType(SliverGap), paints..rect(color: Colors.red));
+  });
+
+  testWidgets('SliverGap paintExtent shrinks with scroll offset',
+      (WidgetTester tester) async {
+    final ScrollController controller =
+        ScrollController(initialScrollOffset: 75);
+
+    await tester.pumpWidget(
+      Directionality(
+        textDirection: TextDirection.ltr,
+        child: CustomScrollView(
+          controller: controller,
+          slivers: const <Widget>[
+            SliverGap(100, color: Colors.red),
+          ],
+        ),
+      ),
+    );
+
+    final RenderSliver sliver = tester.renderObject(find.byType(SliverGap));
+    expect(sliver.geometry!.scrollExtent, 100);
+    expect(sliver.geometry!.paintExtent, 25);
+  });
 }

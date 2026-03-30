@@ -7,6 +7,8 @@ class RenderSliverGap extends RenderSliver {
   })  : _mainAxisExtent = mainAxisExtent,
         _color = color;
 
+  final Paint _paint = Paint();
+
   double get mainAxisExtent => _mainAxisExtent;
   double _mainAxisExtent;
   set mainAxisExtent(double value) {
@@ -53,16 +55,18 @@ class RenderSliverGap extends RenderSliver {
 
   @override
   void paint(PaintingContext context, Offset offset) {
-    if (color != null) {
-      final Paint paint = Paint()..color = color!;
-      final Size size = constraints
-          .asBoxConstraints(
-            minExtent: geometry!.paintExtent,
-            maxExtent: geometry!.paintExtent,
-          )
-          .constrain(Size.zero);
-      context.canvas.drawRect(offset & size, paint);
+    final Color? color = this.color;
+    if (color == null) {
+      return;
     }
+    final Size size = constraints
+        .asBoxConstraints(
+          minExtent: geometry!.paintExtent,
+          maxExtent: geometry!.paintExtent,
+        )
+        .constrain(Size.zero);
+    _paint.color = color;
+    context.canvas.drawRect(offset & size, _paint);
   }
 
   @override

@@ -27,6 +27,30 @@ void main() {
     expect(box.size.height, 200);
   });
 
+  testWidgets('Gap with crossAxisExtent inside horizontal ListView',
+      (WidgetTester tester) async {
+    await tester.pumpWidget(
+      Directionality(
+        textDirection: TextDirection.ltr,
+        child: Center(
+          child: SizedBox(
+            height: 200,
+            child: ListView(
+              scrollDirection: Axis.horizontal,
+              children: const <Widget>[
+                Gap(100, crossAxisExtent: 20),
+              ],
+            ),
+          ),
+        ),
+      ),
+    );
+
+    final RenderBox box = tester.renderObject(find.byType(Gap));
+    expect(box.size.width, 100);
+    expect(box.size.height, 200);
+  });
+
   testWidgets('Gap inside vertical ListView', (WidgetTester tester) async {
     await tester.pumpWidget(
       Directionality(

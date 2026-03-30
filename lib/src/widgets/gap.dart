@@ -61,9 +61,10 @@ class Gap extends StatelessWidget {
   /// - If the parent is a [Column] this is the width of this widget.
   /// - If the parent is a [Row] this is the height of this widget.
   ///
-  /// Must be positive or null. If it's null (the default) the cross axis extent
-  /// will be the same as the constraints of the parent in the opposite
-  /// direction.
+  /// Must be positive or null.
+  ///
+  /// If it's null (the default), it is treated as `0` before constraints are
+  /// applied. Use [Gap.expand] to expand in the cross axis.
   final double? crossAxisExtent;
 
   /// The color used to fill the gap.
@@ -107,6 +108,7 @@ class MaxGap extends StatelessWidget {
     Key? key,
     this.crossAxisExtent,
     this.color,
+    this.fit = FlexFit.loose,
   }) : super(key: key);
 
   /// Creates a widget that takes, at most, the specified [mainAxisExtent] of
@@ -119,11 +121,13 @@ class MaxGap extends StatelessWidget {
     double mainAxisExtent, {
     Key? key,
     Color? color,
+    FlexFit fit = FlexFit.loose,
   }) : this(
           mainAxisExtent,
           key: key,
           crossAxisExtent: double.infinity,
           color: color,
+          fit: fit,
         );
 
   /// The amount of space this widget takes in the direction of the parent.
@@ -140,17 +144,24 @@ class MaxGap extends StatelessWidget {
   /// If the parent is a [Column] this is the width of this widget.
   /// If the parent is a [Row] this is the height of this widget.
   ///
-  /// Must be positive or null. If it's null (the default) the cross axis extent
-  /// will be the same as the constraints of the parent in the opposite
-  /// direction.
+  /// Must be positive or null.
+  ///
+  /// If it's null (the default), it is treated as `0` before constraints are
+  /// applied. Use [MaxGap.expand] to expand in the cross axis.
   final double? crossAxisExtent;
 
   /// The color used to fill the gap.
   final Color? color;
 
+  /// How a flexible gap is inscribed into the available space.
+  ///
+  /// Defaults to [FlexFit.loose], which preserves the existing behavior.
+  final FlexFit fit;
+
   @override
   Widget build(BuildContext context) {
     return Flexible(
+      fit: fit,
       child: _RawGap(
         mainAxisExtent,
         crossAxisExtent: crossAxisExtent,
